@@ -1,0 +1,16 @@
+# GRPC endpoint for the data-node connected to the network you are going to push price to
+node_addr = "api0.neb.exchange:3007"
+
+# the private keys to sign the bundle,
+# return the OpenOracleRequest type, which is later
+# marshall to json and sent to vega
+ethereum_private_key = "ethereum private key"
+
+# the vega recovery phrase to sign transaction on the vega chain
+wallet_mnemonic = "....."
+
+# symbol in twelvedata to get data for
+symbol = "WTI/USD"
+
+update_frequency = "10s"
+twelvedata_apikey = "...."
