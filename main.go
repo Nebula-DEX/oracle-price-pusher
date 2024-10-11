@@ -19,6 +19,7 @@ type Config struct {
 	Symbol             string        `toml:"symbol"`
 	UpdateFrequency    time.Duration `toml:"update_frequency"`
 	TwelveDataApiKey   string        `toml:"twelvedata_apikey"`
+	MicCode            string        `toml:"mic_code"`
 }
 
 var flags = struct {
@@ -46,6 +47,10 @@ func main() {
 		log.Fatalf("update frequency is too low")
 	}
 
+	if len(config.MicCode) <= 0 {
+		log.Fatalf("missing mic_code")
+	}
+
 	p, err := prices.New(
 		config.WalletMnemonic,
 		config.EthereumPrivateKey,
@@ -60,7 +65,7 @@ func main() {
 
 	for range ticker.C {
 		log.Printf("updating prices")
-		price, err := twelvedata.Pull(config.Symbol, config.TwelveDataApiKey)
+		price, err := twelvedata.Pull(config.Symbol, config.TwelveDataApiKey, config.MicCode)
 		if err != nil {
 			log.Printf("couldn't get prices: %v", err)
 			continue
