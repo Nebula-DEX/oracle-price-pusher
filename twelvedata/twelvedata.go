@@ -10,8 +10,12 @@ import (
 )
 
 var (
-	urlQuery = func(symbol, apiKey, micCode string) string {
-		return fmt.Sprintf("https://api.twelvedata.com/price?symbol=%s&apikey=%s&mic_code=%v", symbol, apiKey, micCode)
+	urlQuery = func(symbol, apiKey string, micCode *string) string {
+		if micCode != nil {
+			return fmt.Sprintf("https://api.twelvedata.com/price?symbol=%s&apikey=%s&mic_code=%v", symbol, apiKey, micCode)
+		}
+
+		return fmt.Sprintf("https://api.twelvedata.com/price?symbol=%s&apikey=%s", symbol, apiKey)
 	}
 )
 
@@ -21,7 +25,7 @@ type response struct {
 	Message string `json:"message"`
 }
 
-func Pull(symbol, apiKey, micCode string) (string, error) {
+func Pull(symbol, apiKey string, micCode *string) (string, error) {
 	req, err := http.NewRequest("GET", urlQuery(symbol, apiKey, micCode), nil)
 	if err != nil {
 		return "", err
